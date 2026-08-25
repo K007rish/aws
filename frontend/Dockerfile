@@ -1,4 +1,4 @@
-FROM python:3.18-alpine
+FROM node:3.16-alpine
 WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm install --production

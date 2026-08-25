@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend App</title>
+</head>
+<body>
+  <p>Welcome to the Express Frontend</p>
+  <div id="data">Loading names...</div>
+
+  <form id="nameForm">
+    <label for="nameInput">Add name:</label>
+    <input id="nameInput" name="name" required />
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    async function loadNames() {
+      try {
+        const response = await fetch('/api');
+        const json = await response.json();
+        const dataContainer = document.getElementById('data');
+        if (!response.ok) {
+          dataContainer.textContent = 'Failed to load names from backend.';
+          return;
+        }
+        const names = json.data || [];
+        dataContainer.textContent = names.length ? names.join(', ') : 'No names found.';
+      } catch (error) {
+        document.getElementById('data').textContent = 'Error loading names.';
+        console.error(error);
+      }
+    }
+    loadNames();
+
+    // Form submission: POST to frontend which proxies to backend
+    document.getElementById('nameForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('nameInput');
+      const name = input.value.trim();
+      if (!name) return;
+      try {
+        const resp = await fetch('/api', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name }),
+        });
+        if (resp.ok) {
+          input.value = '';
+          loadNames();
+        } else {
+          const err = await resp.json().catch(() => ({}));
+          alert('Failed to submit: ' + (err.error || resp.status));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Network error while submitting');
+      }
+    });
+  </script>
+</body>
+</html>

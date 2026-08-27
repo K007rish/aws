@@ -1,8 +1,8 @@
-FROM node:3.16-alpine
+FROM node:20-alpine
 WORKDIR /app
-COPY frontend/package*.json ./
+COPY package*.json ./
 RUN npm install --production
-COPY frontend .
+COPY . .
 ENV Backend_API_URL=publicip:8000/api
 EXPOSE 3000
 ENTRYPOINT [ "npm" ]

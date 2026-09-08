@@ -66,16 +66,6 @@ Resources:
       Tags:
         - Key: Name
           Value: PublicSubnet
-
-  PrivateSubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref MyVPC
-      CidrBlock: !Ref PrivateSubnetCIDR
-      Tags:
-        - Key: Name
-          Value: PrivateSubnet
-
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -131,7 +121,7 @@ Resources:
       ImageId: !Ref imageId
       SecurityGroupIds:
         - !Ref newsg
-      SubnetId: !Ref PrivateSubnet
+      SubnetId: !Ref PublicSubnet
       KeyName: !Ref MyKeyPair
       Tags:
         - Key: Name

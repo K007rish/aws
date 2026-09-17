@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 const app = express();
 // Default to localhost for local dev; overridden by env when running in Docker
-const BACKEND_API_URL = process.env.BACKEND_API_URL || 'http://127.0.0.1:8000/api';
+const BACKEND_API_URL = process.env.BACKEND_API_URL || 'http://backend:8000/api';
 const PORT = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, 'public');
 
